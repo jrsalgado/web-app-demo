@@ -5,7 +5,7 @@ RUN npm install -g create-react-app && \
 ENV WORKDIR=/usr/src/app/
 WORKDIR $WORKDIR
 ADD https://github.com/jrsalgado/web-app-demo.git $WORKDIR
-RUN ls
-RUN npm run build
+# RUN ls
+# RUN npm run build
 EXPOSE 5000
 CMD ["serve", "-s", "build"]
