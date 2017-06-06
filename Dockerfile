@@ -4,7 +4,7 @@ RUN npm install -g create-react-app && \
     npm install -g serve
 ENV WORKDIR=/usr/src/app/
 WORKDIR $WORKDIR
-RUN git clone https://github.com/jrsalgado/web-app-demo.git .
+RUN git clone https://github.com/jrsalgado/web-app-demo.git#develop .
 RUN npm install && \
     npm run build
 EXPOSE 5000
