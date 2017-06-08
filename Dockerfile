@@ -1,5 +1,6 @@
 FROM node:6.9.4
 MAINTAINER jayro salgado
+
 RUN echo "building WEB from develop"
 
 RUN mkdir -p /usr/src/app
