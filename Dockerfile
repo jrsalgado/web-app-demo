@@ -1,23 +1,25 @@
 FROM node:6.9.4
 MAINTAINER jayro salgado
+RUN echo "building WEB from develop"
 
-ENV WORKDIR=/usr/src/app
-ENV TEMPDIR=/usr/src/temp
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-RUN npm install -g create-react-app && \
-    npm install -g serve && \
-    mkdir $WORKDIR && \
-    mkdir $TEMPDIR
+# copy package.json and install dependencies
+COPY package.json /usr/src/app
+RUN npm install
 
-WORKDIR $TEMPDIR
-RUN git clone -b develop https://github.com/jrsalgado/web-app-demo.git $TEMPDIR && \
-    npm install && \
-    npm run build && \
-    npm uninstall -g create-react-ap && \
-    mv -v $TEMPDIR/build $WORKDIR/build && \
-    rm -rf $TEMPDIR
+# copy source code
+COPY . /usr/src/app
 
-WORKDIR $WORKDIR
+EXPOSE 3000
+CMD ["npm", "start"]
 
-EXPOSE 5000
-CMD ["serve", "-s", "build"]
+# docker build command
+# $ docker build -t web-app-demo:latest . --no-cache
+
+# docker run command
+# $ docker run -it --rm -v $PWD:/usr/src/app/ -v /usr/src/app/node_modules -P web-app-demo:latest
+
+# install dependencies development
+# $ docker exec -it [container id or name ] npm install --save [dependency]
