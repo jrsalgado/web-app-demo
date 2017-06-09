@@ -2,19 +2,27 @@ import React, { Component } from 'react';
 import './App.css';
 import superagent from 'superagent';
 
+const giphy = {
+  start:'https://media.giphy.com/media/',
+  end: '/giphy.gif',
+  getId: (src) => src.replace(giphy.start,'').replace(giphy.end,''),
+  getURL: (id) => giphy.start + id + giphy.end
+}
+
 class App extends Component {
   constructor() {
     super()
     this.state={
       modal: false
     }
+    console.log(process.env)
   }
   _handleClickImg(evt) {
     const _this = this
     const src = evt.currentTarget.currentSrc
-    const kittenId = src.replace('https://media.giphy.com/media/','').replace('/giphy.gif','');
+    const kittenId = giphy.getId(src);
     superagent
-      .get('http://localhost:3101/vote/?kittenId=' + kittenId)
+      .get(process.env.REACT_APP_API_URL+'/vote/?kittenId=' + kittenId)
       .end(function (err, res) {
         if (err) return console.log(err)
         _this.setState({ modal: true })
@@ -43,7 +51,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <img src="https://media.giphy.com/media/2aDXYxDMtfeWA/giphy.gif" className="App-logo" alt="logo" />
+          <img src={giphy.getURL('2aDXYxDMtfeWA')} className="App-logo" alt="logo" />
           <h2>Kitten Vote App</h2>
         </div>
         <p className="App-intro">
@@ -64,7 +72,7 @@ class App extends Component {
               key={kittenId}
               onClick={this._handleClickImg.bind(this)}
               style={styles.img}
-              src={`https://media.giphy.com/media/${kittenId}/giphy.gif`} />
+              src={giphy.getURL(kittenId)} />
           })}
         </div>
       </div>
