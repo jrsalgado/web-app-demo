@@ -16,10 +16,11 @@ class App extends Component {
       modal: false
     }
   }
-  
+
   _handleClickImg(evt) {
     const _this = this
     const src = evt.currentTarget.currentSrc
+    const kittenId = giphy.getId(src);
 
     superagent
       .get(process.env.REACT_APP_API_URL+'/vote/?kittenId=' + kittenId)
