@@ -15,12 +15,12 @@ class App extends Component {
     this.state={
       modal: false
     }
-    console.log(process.env)
   }
+  
   _handleClickImg(evt) {
     const _this = this
     const src = evt.currentTarget.currentSrc
-    const kittenId = giphy.getId(src);
+
     superagent
       .get(process.env.REACT_APP_API_URL+'/vote/?kittenId=' + kittenId)
       .end(function (err, res) {
@@ -73,6 +73,7 @@ class App extends Component {
               onClick={this._handleClickImg.bind(this)}
               style={styles.img}
               src={giphy.getURL(kittenId)} />
+
           })}
         </div>
       </div>
