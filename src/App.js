@@ -1,20 +1,45 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-// vote route
-// request http://localhost:3101/vote?id=[idfoto]
-// response { id : voto , ...}
+import superagent from 'superagent';
 
 class App extends Component {
+  constructor() {
+    super()
+    this.state={
+      modal: false
+    }
+  }
+  _handleClickImg(evt) {
+    const _this = this
+    const src = evt.currentTarget.currentSrc
+    const kittenId = src.replace('https://media.giphy.com/media/','').replace('/giphy.gif','');
+    superagent
+      .get('http://localhost:3101/vote/?kittenId=' + kittenId)
+      .end(function (err, res) {
+        if (err) return console.log(err)
+        _this.setState({ modal: true })
+        setTimeout(() => {
+          _this.setState({modal: false})
+        }, 10000)
 
-  _handleClickImg(id) {
-    console.log({id})
+      });
   }
 
   render() {
     let styles = {
-      img: {width:'30%', height:'100%', cursor:'pointer', objectFit: 'cover'}
+      img: { width: '30%', height: '30%', cursor: 'pointer', objectFit: 'cover' }
     }
+    let kittens = [
+      '102mqDgAb4Kfug',
+      'FRg1FUARsn96',
+      'gyRWkLSQVqlPi',
+      'uuocoePH1mkVy',
+      'X3Yj4XXXieKYM',
+      'mzU2vvqm0wdr2',
+      '11kXFNRcZBFgwo',
+      'BgnKc6mLmE8tq',
+      'njtPBlbYnHAHK'
+    ]
     return (
       <div className="App">
         <div className="App-header">
@@ -24,26 +49,49 @@ class App extends Component {
         <p className="App-intro">
           Click on the cuttest kitten to vote
         </p>
-        <div style={{ display: 'flex', alignItems:'center', flexDirection: 'column', justifyContent:'space-around', height:'400px', width: '100%'}} >
-          <div style={{display:'flex', justifyContent:'space-around', width:'80%', height:'30%'}}>
-            <img onClick={this._handleClickImg('102mqDgAb4Kfug') } style={styles.img} src="https://media.giphy.com/media/102mqDgAb4Kfug/giphy.gif" />
-            <img style={styles.img} src="https://media.giphy.com/media/FRg1FUARsn96/giphy.gif" />
-            <img style={styles.img} src="https://media.giphy.com/media/gyRWkLSQVqlPi/giphy.gif"/>
-          </div>
-          <div style={{display:'flex', justifyContent:'space-around', width:'80%', height:'30%'}}>
-            <img style={styles.img} src="https://media.giphy.com/media/uuocoePH1mkVy/giphy.gif" />
-            <img style={styles.img} src="https://media.giphy.com/media/X3Yj4XXXieKYM/giphy.gif" />
-            <img style={styles.img} src="https://media.giphy.com/media/mzU2vvqm0wdr2/giphy.gif"/>
-          </div>
-          <div style={{display:'flex', justifyContent:'space-around', width:'80%', height:'30%'}}>
-            <img style={styles.img} src="https://media.giphy.com/media/11kXFNRcZBFgwo/giphy.gif" />
-            <img style={styles.img} src="https://media.giphy.com/media/BgnKc6mLmE8tq/giphy.gif" />
-            <img style={styles.img} src="https://media.giphy.com/media/njtPBlbYnHAHK/giphy.gif"/>
-          </div>
+        {this.state.modal && <Modal></Modal>}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          height: '400px',
+          width: '100%'
+        }} >
+          {kittens.map(kittenId => {
+            return <img
+              key={kittenId}
+              onClick={this._handleClickImg.bind(this)}
+              style={styles.img}
+              src={`https://media.giphy.com/media/${kittenId}/giphy.gif`} />
+          })}
         </div>
       </div>
     );
   }
 }
+
+const Modal = ({ show }) =>
+  <div style={{
+    position: 'absolute',
+    left: '25%',
+    top: '25%',
+    width: '50%',
+    height: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+    background: 'darkturquoise url("https://media.giphy.com/media/14rtlR7b01cjQI/giphy.gif") no-repeat fixed center',
+    color: 'aliceblue',
+    fontSize: 'xx-large',
+    borderRadius: '50px',
+    border: '6px solid white'
+  }}>
+    <h1>Thanks for voting you are cute too</h1>
+    <small>Please keep voting just for fun</small>
+    <p style={{fontSize:'12px'}}>I really dont care i am a dog person</p>
+  </div>
 
 export default App;
