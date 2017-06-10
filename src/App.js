@@ -53,7 +53,8 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={giphy.getURL('2aDXYxDMtfeWA')} className="App-logo" alt="logo" />
-          <h2>Kitten Vote App</h2>
+          <h2 style={{marginBottom: '1px'}}>Kitten Vote App</h2>
+          <a style={{ color: 'white' }} href={process.env.REACT_APP_ADMIN_URL} target="_blank">Click here to the winners</a>
         </div>
         <p className="App-intro">
           Click on the cuttest kitten to vote
@@ -99,7 +100,7 @@ const Modal = ({ show }) =>
     borderRadius: '50px',
     border: '6px solid white'
   }}>
-    <h1>Thanks for voting you are cute too</h1>
+    <h1>Thanks for voting</h1>
     <small>Please keep voting just for fun</small>
     <p style={{fontSize:'12px'}}>I really dont care i am a dog person</p>
   </div>
